@@ -6,7 +6,7 @@ module.exports = (bot, reload) => {
 
     let events = getFiles("./events/", ".js")
 
-    if (events.legnth === 0){
+    if (events.length === 0){
         console.log("No events to load")
     }
 
