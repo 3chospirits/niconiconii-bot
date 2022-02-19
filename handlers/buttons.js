@@ -1,22 +1,27 @@
-const fs = require("fs")
+const { getFiles } = require("../util/functions");
+const { Collection } = require("discord.js");
 
-const getFiles = (path, ending) => {
-	return fs.readdirSync(path).filter((f) => f.endsWith(ending))
-}
+module.exports = (client) => {
+  client.buttons = new Collection();
+  console.log("Getting buttons data");
+  const buttons = getFiles("buttons", ".js");
 
-module.exports = (bot, reload) => {
-	const { client } = bot
+  if (buttons.length === 0) throw "No buttons available to load";
 
-	let buttons = getFiles("./buttons/", ".js")
+  console.log("Inserting buttons data into collection");
+  buttons.forEach((buttonFile) => {
+    const button = require(`../buttons/${file}`);
 
-	if (buttons.legnth === 0) {
-		console.log("No buttons to load")
-	}
-
-	buttons.forEach((f, i) => {
-		if (reload) delete require.cache[require.resolve(`../buttons/${f}`)]
-		const button = require(`../buttons/${f}`)
-
-		client.buttons.set(button.name, button)
-	})
-}
+    if (button.name && typeof button.name === "string") {
+      console.log(`[BUTTON] Successfully loaded: ${buttonFile}`);
+      client.buttons.set(button.name, button);
+    } else {
+      throw new TypeError(
+        [
+          `The button: ${buttonFile} failed to load`,
+          "because it doesn't have a name property`",
+        ].join(" ")
+      );
+    }
+  });
+};

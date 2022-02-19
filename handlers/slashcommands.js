@@ -1,21 +1,23 @@
-const fs = require("fs")
+const { getFiles } = require("../util/functions");
 
-const getFiles = (path, ending) => {
-	return fs.readdirSync(path).filter((f) => f.endsWith(ending))
-}
+module.exports = (client) => {
+  const slashcommands = getFiles("./slashcommands/", ".js");
 
-module.exports = (bot, reload) => {
-	const { client } = bot
+  if (slashcommands.length === 0) throw "No slash commands provided";
 
-	let slashcommands = getFiles("./slashcommands/", ".js")
+  slashcommands.forEach((slashcommandsFile) => {
+    const slashcmd = require(`../slashcommands/${f}`);
 
-	if (slashcommands.legnth === 0) {
-		console.log("No events to load")
-	}
-
-	slashcommands.forEach((f, i) => {
-		if (reload) delete require.cache[require.resolve(`../slashcommands/${f}`)]
-		const slashcmd = require(`../slashcommands/${f}`)
-		client.slashcommands.set(slashcmd.name, slashcmd)
-	})
-}
+    if (slashcmd.name && typeof slashcmd.name === "string") {
+      console.log(`[SLASH] Successfully loaded: ${slashcommandsFile}`);
+      client.slashcommands.set(slashcmd.name, slashcmd);
+    } else {
+      throw new TypeError(
+        [
+          `The slash command: ${slashcommandsFile} failed to load`,
+          "because it doesn't have a name property`",
+        ].join(" ")
+      );
+    }
+  });
+};
