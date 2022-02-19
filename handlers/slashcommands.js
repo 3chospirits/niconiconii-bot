@@ -1,6 +1,8 @@
+const { Collection } = require("discord.js");
 const { getFiles } = require("../util/functions");
 
 module.exports = (client) => {
+  client.slashcommands = new Collection();
   const slashcommands = getFiles("./slashcommands/", ".js");
 
   if (slashcommands.length === 0) throw "No slash commands provided";
