@@ -1,7 +1,7 @@
 const { Collection } = require("discord.js");
 const { getFiles } = require("../util/functions");
 
-module.exports = (bot) => {
+module.exports = (client) => {
   client.events = new Collection();
   console.log("Getting the client's events");
   let events = getFiles("./events/", ".js");
