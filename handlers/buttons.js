@@ -10,7 +10,7 @@ module.exports = (client) => {
 
   console.log("Inserting buttons data into collection");
   buttons.forEach((buttonFile) => {
-    const button = require(`../buttons/${file}`);
+    const button = require(`../buttons/${buttonFile}`);
 
     if (button.name && typeof button.name === "string") {
       console.log(`[BUTTON] Successfully loaded: ${buttonFile}`);
