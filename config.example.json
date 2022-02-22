@@ -1,0 +1,6 @@
+{
+  "prefix": "YOUR_PREFIX",
+  "owners": ["THE_OWNERS_ID"],
+  "clientId": "YOUR_CLIENT_ID",
+  "guildId": "SERVER_ID"
+}
