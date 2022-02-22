@@ -7,7 +7,7 @@ and more understandable code to work with.
 
 ### Windows
 
-```ps
+```console
 git clone https://github.com/3chospirits/niconiconii-bot/tree/improved niconiconii-bot
 cd niconiconii-bot
 ```
