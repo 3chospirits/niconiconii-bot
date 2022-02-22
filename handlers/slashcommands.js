@@ -1,20 +1,20 @@
 const { Collection } = require("discord.js");
 const { getFiles } = require("../util/functions");
+const { clientId, guildId } = require("../config.json");
+const { REST } = require("@discordjs/rest");
+const { Routes } = require("discord-api-types/v9");
 
-module.exports = (client) => {
+module.exports = async (client) => {
+  const commands = [];
   client.slashcommands = new Collection();
 
-  console.log("Getting slash command data");
-  const slashcommands = getFiles("./slashcommands/", ".js");
-
+  const slashcommands = getFiles("slashcommands", ".js");
   if (slashcommands.length === 0) throw "No slash commands provided";
 
-  console.log("inserting slash command data into collection");
   slashcommands.forEach((slashcommandsFile) => {
     const slashcmd = require(`../slashcommands/${slashcommandsFile}`);
-
     if (slashcmd.name && typeof slashcmd.name === "string") {
-      console.log(`[SLASH] Successfully loaded: ${slashcommandsFile}`);
+      commands.push(slashcmd.data.toJSON());
       client.slashcommands.set(slashcmd.name, slashcmd);
     } else {
       throw new TypeError(
@@ -25,4 +25,14 @@ module.exports = (client) => {
       );
     }
   });
+
+  const rest = new REST({ version: "9" }).setToken(process.env.TOKEN);
+
+  try {
+    await rest.put(Routes.applicationGuildCommands(clientId, guildId), {
+      body: commands,
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };

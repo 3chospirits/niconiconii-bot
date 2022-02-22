@@ -1,33 +1,33 @@
-const run = async (client, interaction) => {
-	let user = interaction.options.getUser("user")
-	let reason = interaction.options.getString("reason") || "No reason given"
+const { SlashCommandBuilder } = require("@discordjs/builders");
 
-	if (!user) return interaction.reply("You must provide a user to kick")
+const data = new SlashCommandBuilder()
+  .setName("kick")
+  .setDescription("kicks a server member")
+  .addUserOption((option) => {
+    option.setName("user");
+    option.setDescription("select the user to kick");
+    option.setRequired(true);
+    return option;
+  })
+  .addStringOption((option) => {
+    option.setName("reason");
+    option.setDescription("reason of the kick");
+    option.setRequired(false);
+    return option;
+  });
 
-	// ban
-	try {
-		await interaction.guild.members.kick(user, reason)
-		return interaction.reply(`${user.tag} has been kicked for *${reason}*`)
-	} catch (e) {
-		if (e) {
-			console.error(e)
-			return interaction.reply(`Failed to kick ${user.tag}`)
-		}
-	}
-}
+const run = async ({ interaction, options }) => {
+  const [member, user, reason] = options;
+  try {
+    await member.kick(reason);
+    return interaction.reply(`${user.tag} has been kicked for *${reason}*`);
+  } catch (err) {
+    return interaction.reply(`Failed to kick ${user.tag}`);
+  }
+};
 
 module.exports = {
-	name: "kick",
-	description: "Kicks a user from the server.",
-	perms: "KICK_MEMBERS",
-	options: [
-		{ name: "user", description: "The user to kick.", type: "USER", required: true },
-		{
-			name: "reason",
-			description: "reason for the punishment.",
-			type: "STRING",
-			required: false,
-		},
-	],
-	run,
-}
+  name: "kick",
+  data,
+  run,
+};

@@ -1,35 +1,45 @@
-const run = async (client, interaction) => {
-	let user = interaction.options.getUser("user")
-	let reason = interaction.options.getString("reason") || "No reason given"
+const { SlashCommandBuilder } = require("@discordjs/builders");
 
-	if (!user) return interaction.reply("You must provide a user to ban")
+const data = new SlashCommandBuilder()
+  .setName("ban")
+  .setDescription("bans a server member")
+  .addUserOption((option) =>
+    option
+      .setName("ban")
+      .setDescription("select the user to ban")
+      .setRequired(true)
+  )
+  .addStringOption((option) =>
+    option
+      .setName("reason")
+      .setDescription("select the user to ban")
+      .setRequired(true)
+  );
 
-	// ban
-	try {
-		await interaction.guild.bans.create(user, {
-			reason,
-		})
-		return interaction.reply(`${user.tag} has been banned for *${reason}*`)
-	} catch (e) {
-		if (e) {
-			console.error(e)
-			return interaction.reply(`Failed to ban ${user.tag}`)
-		}
-	}
-}
+const run = async ({ interaction, options }) => {
+  const [member, user, reason] = options;
+  if (!member.bannable) {
+    return interaction.reply({
+      content: `Cannot ban ${user.tag}`,
+    });
+  }
+  try {
+    await member.ban({ reason });
+    interaction.reply({
+      ephemeral: true,
+      content: `${user.tag} have been successfully banned from the server`,
+    });
+  } catch (err) {
+    console.log(err);
+    interaction.reply({
+      ephemeral: true,
+      content: `Couldn't ban ${user.tag}`,
+    });
+  }
+};
 
 module.exports = {
-	name: "ban",
-	description: "Bans a user from the server.",
-	perms: "BAN_MEMBERS",
-	options: [
-		{ name: "user", description: "The user to ban.", type: "USER", required: true },
-		{
-			name: "reason",
-			description: "reason for the punishment.",
-			type: "STRING",
-			required: false,
-		},
-	],
-	run,
-}
+  data,
+  name: "ban",
+  run,
+};
