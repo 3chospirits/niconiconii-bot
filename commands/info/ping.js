@@ -1,9 +1,8 @@
 module.exports = {
-    name: "ping",
-    category: "info",
-    permissions: [],
-    devOnly: false,
-    run: async ({client, message, args}) => {
-        message.reply("Pong")
-    }
-}
+  name: "ping",
+  description: "it pongs a ping",
+  category: "info",
+  run: async ({ message }) => {
+    message.channel.send({ content: "ping yay" });
+  },
+};

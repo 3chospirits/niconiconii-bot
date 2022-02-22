@@ -1,34 +1,67 @@
 module.exports = {
-	name: "interactionCreate",
-	run: async (bot, interaction) => {
-		if (interaction.isCommand()) handleSlashCommand(bot, interaction)
-		else if (interaction.isButton()) handleButton(bot, interaction)
-	},
-}
+  name: "interactionCreate",
+  run: async (interaction) => {
+    const { client } = interaction;
 
-const handleButton = (bot, interaction) => {
-	const {client} = bot 
+    switch (true) {
+      case interaction.isCommand():
+        handleSlashCommand(client, interaction);
+        break;
+      case interaction.isButton():
+        handleButton(interaction);
+        break;
+      default:
+        interaction.reply({
+          content: "This interaction cannot be used yet",
+        });
+        break;
+    }
+  },
+};
 
-	// "name-param1-param2-...."
-	const [name, ...params] = interaction.customId.split("-")
-	
-	const button = client.buttons.get(name)
+const handleButton = (interaction) => {
+  const { client } = interaction;
+  const [name, ...params] = interaction.customId.split("-");
+  const button = client.buttons.get(name);
+  if (!button) return;
 
-	if (!button) return 
-	button.run(client, interaction, params)
-}
+  button.run({
+    interaction,
+    params,
+    client,
+  });
+};
 
-const handleSlashCommand = (bot, interaction) => {
-	const {client} = bot
-	if (!interaction.inGuild()) return interaction.reply("This command can only be used in a guild")
+const handleSlashCommand = (interaction) => {
+  const { client } = interaction;
 
-	const slashcmd = client.slashcommands.get(interaction.commandName)
+  if (!interaction.inGuild()) {
+    return interaction.reply({
+      content: "This interaction cannot be used outside of a guild",
+    });
+  }
 
-	if (!slashcmd) return
+  const slashcmd = client.slashcommands.get(interaction.commandName);
 
-	// check permissions
-	if (slashcmd.perms && !interaction.member.permissions.has(slashcmd.perms))
-		return interaction.reply("You do not have permission to use this command")
+  if (!slashcmd) return;
+  if (slashcmd.perms && !interaction.member.permissions.has(slashcmd.perms)) {
+    return interaction.reply({
+      content: "You don't have permissions to use that command",
+    });
+  }
 
-	slashcmd.run(client, interaction)
-}
+  const options = [];
+  interaction.options.data.forEach((option) => {
+    if (option.type === "USER") {
+      options.push(option.member, option.user);
+      return;
+    }
+    options.push(option.value);
+  });
+
+  slashcmd.run({
+    interaction,
+    options,
+    client,
+  });
+};
