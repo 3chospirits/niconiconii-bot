@@ -1,6 +1,6 @@
 # NICONICONII-BOT ADVANCED BOT CODE
 
-This branch was solely made for a bit intermediate developers who wants cleaner
+This branch was solely made for intermediate developers who wants cleaner
 and more understandable code to work with.
 
 ## Install the bot
