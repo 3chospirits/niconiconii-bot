@@ -1,4 +1,4 @@
-# NICONICONII-BOT ADVANCED BOT CODE
+# NICONICONII-BOT ADVANCED CODE
 
 This branch was solely made for intermediate developers who wants cleaner
 and more understandable code to work with.
