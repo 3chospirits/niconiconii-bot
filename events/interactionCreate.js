@@ -5,7 +5,7 @@ module.exports = {
 
     switch (true) {
       case interaction.isCommand():
-        handleSlashCommand(client, interaction);
+        handleSlashCommand(interaction);
         break;
       case interaction.isButton():
         handleButton(interaction);
