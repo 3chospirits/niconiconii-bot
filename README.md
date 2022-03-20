@@ -12,8 +12,7 @@ git clone https://github.com/3chospirits/niconiconii-bot/tree/improved niconicon
 cd niconiconii-bot
 ```
 
-After installation, you will have to rename `config.example.json` with the
-with your own data to run the bot
+After installation, you will have to rename `config.example.json` as `config.json` with your own data to run the bot
 
 When that is done, you can directly run the bot after installing the dependencies
 with `npm i`
