@@ -41,7 +41,7 @@ module.exports = async (client) => {
         process.env.GUILD_ID
       ),
       {
-        body: 'e',
+        body: slash,
       }
     );
   } catch (error) {
