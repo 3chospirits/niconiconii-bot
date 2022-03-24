@@ -32,7 +32,7 @@ Guild ID can be found on a server while right clicking the header and click `cop
 ## Install dependencies
 
 
-Following commands will install <span style="color: red;">all</span> required packages.
+Following commands will install all required packages.
 
 With `npm`
 
@@ -44,4 +44,18 @@ With `yarn`
 
 ```ps
 yarn
+```
+
+## Run the bot
+
+Use the following command
+
+```ps
+npm run start
+```
+
+Or the shorthand
+
+```
+node .
 ```
