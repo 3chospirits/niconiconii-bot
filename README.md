@@ -31,7 +31,8 @@ Guild ID can be found on a server while right clicking the header and click `cop
 
 ## Install dependencies
 
-Following commands will install packages.
+
+Following commands will install <span style="color: red;">all</span> required packages.
 
 With `npm`
 
