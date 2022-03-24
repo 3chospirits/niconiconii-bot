@@ -3,3 +3,4 @@ package-lock.json
 node_modules/
 .prettierrc
 config.json
+yarn.lock
