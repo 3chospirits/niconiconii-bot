@@ -26,12 +26,13 @@ GUILD_ID=
 CLIENT_ID=
 ```
 
-Bot's ID can be found in the developer page in the `Auth` tab
+Bot's ID can be found in the developer page in the `Auth` tab.
 Guild ID can be found on a server while right clicking the header and click `copy ID`, this needs developer options to be enabled in Discord's settings
 
 ## Install dependencies
 
-Following commands will install packages.
+
+Following commands will install all required packages.
 
 With `npm`
 
@@ -43,4 +44,18 @@ With `yarn`
 
 ```ps
 yarn
+```
+
+## Run the bot
+
+Use the following command
+
+```ps
+npm run start
+```
+
+Or the shorthand
+
+```
+node .
 ```
