@@ -1,4 +1,4 @@
-## General Intallation
+## General Installation
 
 In your terminal, run the following commands in order
 
